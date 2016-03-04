@@ -1,0 +1,20 @@
+timezone: 'Asia/Shanghai'
+
+  # Site settings
+site_name : Spoofer的博客
+title: dgl
+email: 2457876902@qq.com
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://www.spoofer.top" # the base hostname & protocol for your site
+github_username:  TopSpoofer
+keywords: "spoofer的博客"
+paginate: 10
+paginate_path: "page:num"
+
+  # Build settings
+markdown: kramdown
+permalink: /:year/:month/:day/:title
+
+gems:
+  - jekyll-sitemap
+  - jekyll-paginate
