@@ -4,7 +4,7 @@ title:  "在centos6上安装cm和cdh"
 date:   '2016-03-04 14:00:00'
 author: 'spoofer'
 categories: 'blog'
-targets: 'cdh'
+tgs: 'cdh'
 excerpt: 'centos6上安装cm和cdh 5.5.1'
 keywords: 'centos6,安装cm 5.5.1,安装cdh 5.5.1,大数据'
 ---
