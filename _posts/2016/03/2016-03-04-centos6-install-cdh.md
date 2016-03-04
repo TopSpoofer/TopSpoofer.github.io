@@ -16,7 +16,7 @@ keywords: 'centos6,安装cm 5.5.1,安装cdh 5.5.1,大数据'
 这里模拟一个最小的分布式集群，需要3台centos6（我使用的是centos6.7）。首先配置好每台机器的ip（后面有讲述）， 使其可以远程登陆。
 这里介绍一个不错的谷歌浏览器插件：Serverauditor - SSH clien， 这是一个ssh客户端。
 
-#####配置机器ip如下：
+##### 配置机器ip如下：
 
 ```
 xxx.xxx.xxx.2   master
