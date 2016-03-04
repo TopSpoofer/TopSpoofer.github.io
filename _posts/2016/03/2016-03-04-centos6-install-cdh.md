@@ -157,14 +157,14 @@ service sshd start
 
 ##### 配置免密码登
 
-安装请参考：[http://blog.csdn.net/hjskl/article/details/8809282]
+安装请参考：[http://blog.csdn.net/hjskl/article/details/8809282](http://blog.csdn.net/hjskl/article/details/8809282)
 
 测试每台机器互相登陆成功。到这里， 机器部分已经准备完毕了。
 
 
 #### 安装cm和cdh
 
-这里安装的是cm 5.5.3, cm-5.5.3下载地址： [http://archive.cloudera.com/cm5/redhat/6/x86_64/cm/5.5.3/RPMS/x86_64/]
+这里安装的是cm 5.5.3, cm-5.5.3下载地址：[http://archive.cloudera.com/cm5/redhat/6/x86_64/cm/5.5.3/RPMS/x86_64/](http://archive.cloudera.com/cm5/redhat/6/x86_64/cm/5.5.3/RPMS/x86_64/)
 
 可以使用wget工具一个一个下载到本地， 再分发到各台机器。将下载回来的cm的rpm包复制到/var/cache/yum/x86_64/6/cloudera-manager/packages/
 
@@ -174,9 +174,9 @@ service sshd start
 cp * -t /var/cache/yum/x86_64/6/cloudera-manager/packages/
 ```
 
-下载installer: [http://archive.cloudera.com/cm5/installer/5.5.3/]
+下载installer: [http://archive.cloudera.com/cm5/installer/5.5.3/](http://archive.cloudera.com/cm5/installer/5.5.3/)
 
-下载parcels: [http://archive-primary.cloudera.com/cdh5/parcels/5.5.1/]
+下载parcels: [http://archive-primary.cloudera.com/cdh5/parcels/5.5.1/](http://archive-primary.cloudera.com/cdh5/parcels/5.5.1/)
 
 这个parcels包括：
 
