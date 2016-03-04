@@ -4,17 +4,17 @@ head: "标签"
 permalink: /targets/
 ---
 
-<ul class="categories-box">
+<ul class="tags-box">
     {% if site.posts != empty %}
-        {% for cat in site.author %}
-            <a href="#{{ cat[0] }}" title="{{ cat[0] }}" rel="{{ cat[1].size }}">{{ cat[0] | join: "/"}}<span class="article-size"> ({{ cat[1].size }})</span></a>
+        {% for tag in site.tags %}
+            <a href="#{{ tag[0] }}" title="{{ tag[0] }}" rel="{{ tag[1].size }}">{{ tag[0] | join: "/"}}<span class="article-size"> ({{ tag[1].size }})</span></a>
         {% endfor %}
 </ul>
 
-<ul class="categories-box">
-    {% for cat in site.author %}
-        <li id="{{ cat[0] }}"><h3>{{ cat[0]}}</h3></li>
-        {% for post in cat[1] %}
+<ul class="tags-box">
+    {% for tag in site.tags %}
+        <li id="{{ tag[0] }}"><h3>{{ tag[0]}}</h3></li>
+        {% for post in tag[1] %}
             <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time> &raquo;
             <a href="{{ site.url }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a><br />
         {% endfor %}
