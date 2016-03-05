@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "在centos6上安装cm和cdh"
+title:  "在centos6上安装cm 5.5.3和cdh 5.5.1"
 date:   '2016-03-04 14:00:00'
 author: 'spoofer'
 categories: 'blog'
@@ -212,4 +212,4 @@ chmod ux cloudera-manager-installer.bin
 
 ##### 安装cdh
 
-安装完cm后， 登陆cm， 默认用户和admin都为admin。使用cm 的web页面进行安装cdh和集群的各个组件，这个比较简单！
+安装完cm后， 登陆cm http://master:7180/， 默认用户和admin都为admin。使用cm 的web页面进行安装cdh和集群的各个组件，这个比较简单！
