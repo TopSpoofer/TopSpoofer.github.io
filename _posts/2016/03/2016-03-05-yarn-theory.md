@@ -13,6 +13,7 @@ keywords: 'hadoop,2.6,Yarn,大数据'
 
 本文简单地讲述hadoop mapreduceV2 框架 yarn的工作原理。由于mapreduceV1框架在大集群中面临着扩展性瓶颈，所以2010年雅虎团队开始设计了mapreduceV2框架Yarn (yet another resource negotiaor)。
 
+<!--more-->
 
 ### yarn框架图
 
@@ -53,4 +54,4 @@ RM是一个全局的资源管理器，其负责整个系统资源的管理，和
 
 调度器根据系统状态将系统中的资源分配给正在运行的应用程序，调度器只关注系统调度工作
 
-[1]: http://spoofer.top/assets/images/2016/03/yarn_architecture.gif
+[1]: http://www.spoofer.top/assets/images/2016/03/yarn_architecture.gif
