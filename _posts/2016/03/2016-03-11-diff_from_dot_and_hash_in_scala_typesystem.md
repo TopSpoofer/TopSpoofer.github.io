@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "scala类型系统中dot(.)符号与hash(#)符号的主要区别"
-date:   '2016-03-011 14:00:00'
+date:   '2016-03-11 14:00:00'
 author: 'spoofer'
 categories: 'blog'
 tags: 'scala'
