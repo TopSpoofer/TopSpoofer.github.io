@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "scala类型参数和高阶类型简介"
-date:   '2016-03-011 14:00:00'
+date:   '2016-03-11 14:00:00'
 author: 'spoofer'
 categories: 'blog'
 tags: 'scala'
