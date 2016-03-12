@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "scala高阶函数简介"
-date:   '2016-03-12 14:00:00'
+date:   '2016-03-12 09:00:00'
 author: 'spoofer'
 categories: 'blog'
 tags: 'scala'
