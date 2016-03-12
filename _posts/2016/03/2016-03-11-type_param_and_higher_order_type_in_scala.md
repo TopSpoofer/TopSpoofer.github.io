@@ -20,8 +20,7 @@ keywords: 'scala 类型参数 高阶类型'
 类型参数是在调用方法、构造类型或者扩展类型是作为参数传入的一个类型定义。
 
 ```
-class People[A](name: String) {
-}
+class People[A](name: String) { }
 
 class Test {
   def test[A](name: String, a: A) = {
@@ -31,6 +30,7 @@ class Test {
 ```
 
 如上代码， 其中A就是类型参数了。即使是初学者，其实很多时候都用到， 如:
+
 ```
 val list = List[String]("1", "2")
 String就是这个list的类型参数了
