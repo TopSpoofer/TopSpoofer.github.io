@@ -207,15 +207,16 @@ blockpoolID跟上面BP-xxxxxx-xxxx-${time}是一样的。
 如果dfs.data.dir指定了不同磁盘上的多个目录，那么数据块会以rr（轮询）的方式写到各个目录中。
 这里需要注意的是，即使指定了多个目录，但同一个datanode上的每个磁盘上的块都不会重复，只有不同的datanode上的数据块才可能会重复。
 
-
 ### 安全模式
 
+在namenode启动的时候，namenode会将fsimage载入到内存当中，并执行编辑日志（edist）中的各种操作。
+一旦在内存中成功建立文件系统元数据的映像，则创建一个新的fsimage文件和一个空的编辑日志。这个时候，namenode开始监听rpc和http请求。
+不过这个时候系统运行在安全模式下，系统对客户端来说是只读的， 而且是只有进行访问文件系统元数据的操作才会成功，
+只有当datanode上的块可用时，才能够进行读取块内容的操作。
 
+需要注意的是，系统中的数据块的位置并不是由namenode维护的， 而是由块列表的形式存储在datanode中。
+在安全模式下，各个datanode会向namenode发送最新的块列表的信息，在namendoe了解到足够的块位置的时候，系统就可以高效地运行了。
+实际上，在安全模式下，namenode不会向datanode发出任何的复制或者删除的指令的。
+在系统启动一个刚刚格式化的hdfs集群时，因为系统还没有任何一个块，所以系统这个时候是不会进入安全模式的。
 
-
-
-
-
-
-
-。
+[1]: http://www.spoofer.top/assets/images/2016/03/edist-adn-fsimage.png
