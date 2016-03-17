@@ -17,14 +17,14 @@ keywords: 'intellij 远程提交任务 spark集群'
 
 ### 提交任务抛出异常
 
-在运行spark程序时候抛出找不到主类的异常，这个时候是因为本地提交的任务没有将main函数的jar丢到我忍kers上运行。
+在运行spark程序时候抛出找不到主类的异常，这个时候是因为本地提交的任务没有将main函数的jar丢到workers上运行。
 所以在workers上是找不到你的程序的！
 
 ### 配置intellij project 属性
 
 #### 配置代码
 
-新建sbtproject， 这个就不多说了。代码如下：
+新建 sbt project， 这个就不多说了。代码如下：
 
 ```
 package top.spoofer.hbrdd
