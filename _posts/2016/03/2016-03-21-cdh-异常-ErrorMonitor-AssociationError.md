@@ -12,29 +12,32 @@ keywords: 'cdh-5.5.1 异常 ERROR ErrorMonitor: AssociationError'
 ### 概述
 
 前几天，在cdh 5.5.1的下提交任务，出现了一个莫名其妙的错误信息，但是不影响程序执行。其报错如下：
-ERROR ErrorMonitor: AssociationError [akka.tcp://sparkDriver@10.16.255.231:46792] <- [akka.tcp://sparkExecutor@10.16.255.213:48822]: Error [Shut down address:
+
+```
+ERROR ErrorMonitor: AssociationError [akka.tcp://sparkDriver@10.255.13.231:46792] <- [akka.tcp://sparkExecutor@10.255.13.213:48822]: Error [Shut down address:
+```
 
 <!--more--->
 
 ### 错误描述
 
 ```
-16/03/19 10:40:58 INFO SparkUI: Stopped Spark web UI at http://10.16.255.231:4040
+16/03/19 10:40:58 INFO SparkUI: Stopped Spark web UI at http://10.255.13.231:4040
 16/03/19 10:40:58 INFO DAGScheduler: Stopping DAGScheduler
 16/03/19 10:40:58 INFO SparkDeploySchedulerBackend: Shutting down all executors
 16/03/19 10:40:58 INFO SparkDeploySchedulerBackend: Asking each executor to shut down
-16/03/19 10:40:58 ERROR ErrorMonitor: AssociationError [akka.tcp://sparkDriver@10.16.255.231:46792] <- [akka.tcp://sparkExecutor@10.16.255.213:48822]: Error [Shut down address: akka.tcp://sparkExecutor@10.16.255.213:48822] [
-akka.remote.ShutDownAssociation: Shut down address: akka.tcp://sparkExecutor@10.16.255.213:48822
+16/03/19 10:40:58 ERROR ErrorMonitor: AssociationError [akka.tcp://sparkDriver@10.255.13.231:46792] <- [akka.tcp://sparkExecutor@10.255.13.213:48822]: Error [Shut down address: akka.tcp://sparkExecutor@10.255.13.213:48822] [
+akka.remote.ShutDownAssociation: Shut down address: akka.tcp://sparkExecutor@10.255.13.213:48822
 Caused by: akka.remote.transport.Transport$InvalidAssociationException: The remote system terminated the association because it is shutting down.
 ]
 akka.event.Logging$Error$NoCause$
-16/03/19 10:40:58 ERROR ErrorMonitor: AssociationError [akka.tcp://sparkDriver@10.16.255.231:46792] <- [akka.tcp://sparkExecutor@10.16.255.211:60743]: Error [Shut down address: akka.tcp://sparkExecutor@10.16.255.211:60743] [
-akka.remote.ShutDownAssociation: Shut down address: akka.tcp://sparkExecutor@10.16.255.211:60743
+16/03/19 10:40:58 ERROR ErrorMonitor: AssociationError [akka.tcp://sparkDriver@10.255.13.231:46792] <- [akka.tcp://sparkExecutor@10.255.13.211:60743]: Error [Shut down address: akka.tcp://sparkExecutor@10.255.13.211:60743] [
+akka.remote.ShutDownAssociation: Shut down address: akka.tcp://sparkExecutor@10.255.13.211:60743
 Caused by: akka.remote.transport.Transport$InvalidAssociationException: The remote system terminated the association because it is shutting down.
 ]
 akka.event.Logging$Error$NoCause$
-16/03/19 10:40:58 ERROR ErrorMonitor: AssociationError [akka.tcp://sparkDriver@10.16.255.231:46792] <- [akka.tcp://sparkExecutor@10.16.255.212:35300]: Error [Shut down address: akka.tcp://sparkExecutor@10.16.255.212:35300] [
-akka.remote.ShutDownAssociation: Shut down address: akka.tcp://sparkExecutor@10.16.255.212:35300
+16/03/19 10:40:58 ERROR ErrorMonitor: AssociationError [akka.tcp://sparkDriver@10.255.13.231:46792] <- [akka.tcp://sparkExecutor@10.255.13.212:35300]: Error [Shut down address: akka.tcp://sparkExecutor@10.255.13.212:35300] [
+akka.remote.ShutDownAssociation: Shut down address: akka.tcp://sparkExecutor@10.255.13.212:35300
 Caused by: akka.remote.transport.Transport$InvalidAssociationException: The remote system terminated the association because it is shutting down.
 ]
 akka.event.Logging$Error$NoCause$
