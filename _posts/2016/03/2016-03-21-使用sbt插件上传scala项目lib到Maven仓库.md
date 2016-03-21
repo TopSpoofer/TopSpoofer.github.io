@@ -38,12 +38,12 @@ keywords: 'sbt 插件 上传scala项目 library Maven仓库'
 
 ![create-issue-2.png][3]
 
-你需要创建的是一个“newproject”类型的issue。其中project是你项目在github的地址。
+你需要创建的是一个“newproject”类型的issue。其中project url是你项目在github的地址。
 而scm url是你项目的地址，即用git工具来提交代码时用的那个地址，不过这里不支持ssh类型的地址，所以只能使用https的。
 特别要注意的是groupID这个项，我实践的时候一直不成功就是因为这个！我的域名是www.spoofer.top, 所以我选择使用了top.spoofer这个id。
 这个需要和上面的sbt项目提到的对应！
 
-创建issue后， 需要等待的，时间长短就不知道了,可能需要1~2天来。如果审核通过，则会收到审核通过的邮件。如下：
+创建issue后， 需要等待的，时间长短就不知道了,可能需要1~2天。如果审核通过，则会收到审核通过的邮件。如下：
 
 ![issue-configuration.png][4]
 
@@ -118,7 +118,7 @@ pomExtra in Global := {
 
 ### 发布项目
 
-加入项目根目录， 终端执行sbt。
+进入项目根目录， 终端执行sbt。
 
 ```
 > compile          //编译项目
@@ -126,6 +126,7 @@ pomExtra in Global := {
 > pgp-cmd send-key keyname hkp://pool.sks-keyservers.net //将公钥发到服务器，其中keyname是生成key时使用的用户名字或者邮箱。
 ```
 
+如果执行上述指令报什么readonly错误的话，根据提示操作就可以了。
 如果在send-key过程中，没有任何输出，那么是你的keyname错了，重新确认一下。
 
 新建文件：~/.sbt/0.13/sonatype.sbt，在其中加入：
@@ -181,12 +182,13 @@ topspoofer-1000
 ```
 
 这时点击勾选上传的Repository， 然后点击close。然后再回去创建issue的地方， 添加一条评论：
+
 ```
 This is the first time I promoted a release. Could you activate the sync process please?
 ```
 
 等待几个小时后会收到工作人员的邮件，然后会发现原来的 Release 按钮变成了可用状态，点击后就完成了发布操作。
-接着在回到 Issue 处添加以下评论等待几个小时就可以在 Maven 中央仓库（http://mvnrepository.com/artifact/top.spoofer/jslog_2.10/1.0）看到你的劳动成果了。实际上我等了大约2日，仓库就同步了。
+接着在回到 Issue 处添加以下评论等待几个小时就可以在 Maven 中央仓库（http://mvnrepository.com/）看到你的劳动成果了。实际上我等了大约2日，仓库就同步了。
 
 [1]: http://www.spoofer.top/assets/images/2016/03/jslog-sbt-project.png
 [2]: http://www.spoofer.top/assets/images/2016/03/create-issue-1.png
