@@ -18,9 +18,13 @@ keywords: 'kafka 0.9.0.1 分布式 安装'
 #### 安装前准备
 
 1、因为kafka的分布式安装需要依赖于zookeeper，所以需要先安装分布式的zookeeper。我使用的是cdh-5.5.1的zookeeper集群（不要问我为什么不是要cdh的kafka集群，为势所迫啊）。
-2、下载kafka二进制安装包。 下载地址： (download kafka)[http://kafka.apache.org/downloads.html]
+
+2、下载kafka二进制安装包。 下载地址：   (download kafka)[http://kafka.apache.org/downloads.html]
+
 3、准备集群机器： kafka1、kafka2（条件限制只准备了2台机器，我的业务也不需要太大的集群）
+
 4、对机器安装ssh，测试每台集群都能免密码登陆，包括zookeeper的机器哦。
+
 5、对集群机器安装java。
 
 
@@ -44,7 +48,7 @@ $ mkdir etc
 $ cp config/server.properties etc/kafka-server1.properties
 $ cp config/server.properties etc/kafka-server2.properties  ## Kafka2机器上不需要执行这个，因为已经够3个broker了。
 
-### 假加入环境变量
+### 加入kafka home到环境变量
 $ echo ### kafka >> ~/.bashrc
 $ echo export KAFKA_HOME=/home/spoofer/Kafka >> ~/.bashrc ### /home/spoofer/Kafka为你的kafka的安装目录
 $ echo export KAFKA_BIN=$KAFKA_HOME/bin >> ~/.bashrc
@@ -57,7 +61,7 @@ $ source ~/.bashrc
 
 因为只是简单的安装，所以配置都是简单的配置，没有调优等。
 
-主要的几个需要修改的配置项为：
+主要需要修改的几个配置项为：
 
 ```
 broker.id # 每个broker服务都要不同，而且大于0
@@ -70,7 +74,7 @@ log.dirs=/home/spoofer/Kafka/data/blk1 # 日志数据保存的目录
 zookeeper.connect=Core1:2181,Core2:2181,Core3:2181 # zookeeper集群
 delete.topic.enable=true
 ```
-我的集群架构是： 在Kafka1上安装两个broker，在Kafka2上安装一个broker。对于上述的几个配置项，我的详细配置如下：
+我的集群架构是： 在Kafka1上安装两个broker，在Kafka2上安装一个broker。对于上述的几个配置项，我集群机器的详细配置如下：
 
 ```
 ### kafka1， broker1， kafka-server1.properties
@@ -124,17 +128,23 @@ metadata.broker.list=Kafka1:9092,Kafka1:9093,Kafka2:9094
 
 #### 启动kafka
 
+这个是启动broker的指令，其他broker自己设置指定的配置文件进行启动
+
 ```
-### 这个启动broker的指令，其他broker自己设置指定的配置文件进行启动
 bin/zookeeper-server-start.sh etc/kafka-server1.properties
+```
+
 或者以守护进程来运行
+
+```
 bin/zookeeper-server-start.sh -daemon etc/kafka-server1.properties
 ```
 
 #### 创建topic
 
+创建一个叫做"mytest"的topic，它只有1个分区，3个副本。
+
 ```
-### 创建一个叫做"mytest"的topic，它只有1个分区，3个副本。
 bin/kafka-topics.sh --create --zookeeper Core1:2181 --replication-factor 3 --partitions 1 --topic mytest
 ```
 
@@ -157,9 +167,11 @@ Topic:mytest     PartitionCount:1        ReplicationFactor:3     Configs:
 
 其中字段的解析如下：
 
-leader：负责处理消息的读和写，leader是从所有节点中随机选择的.
-replicas：列出了所有的副本节点，不管节点是否在服务中.
-isr：是正在服务中的节点.
+leader：负责处理消息的读和写，leader是从所有节点中随机选择的。
+
+replicas：列出了所有的副本节点，不管节点是否在服务中。
+
+isr：是正在服务中的节点。
 
 
 #### 启动生产者
@@ -191,3 +203,7 @@ kafka-topics.sh --delete --zookeeper Core1:2181 --topic mytest
 
 删除kafka存储目录（server.properties文件log.dirs配置，默认为"/tmp/kafka-logs"）相关topic目录
 删除zookeeper "/brokers/topics/"目录下相关topic节点
+
+
+
+  
