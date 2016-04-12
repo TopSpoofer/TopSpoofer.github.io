@@ -15,7 +15,7 @@ keywords: 'spark spark-submit 参数'
 
 <!--more-->
 
-##### --master master_url
+##### ---master master_url
 
 这个master_url可以是如下格式：
 
