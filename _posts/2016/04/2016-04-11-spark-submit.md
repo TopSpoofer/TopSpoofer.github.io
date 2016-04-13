@@ -27,6 +27,7 @@ yarn-cluster
 yarn-client
 local
 ```
+
 ##### --deploy-mode deploy-mode
 
 Driver 程序的运行模式，client或者cluster
