@@ -1,11 +1,11 @@
 ---
 layout: post
-title:  "将kafka数据经spark streaming导入到hbase"
+title:  "利用spark streaming将kafka topic 数据导入到hbase"
 date:   '2016-04-14 14:00:00'
 author: 'spoofer'
 categories: 'blog'
 tags: 'spark'
-excerpt: '将 kafka 数据经 spark streaming 导入到 hbase '
+excerpt: '利用 spark streaming 将 kafka topic 数据导入到 hbase'
 keywords: 'kafka 数据 spark streaming 导入 hbase saveAsNewAPIHadoopDataset'
 ---
 
