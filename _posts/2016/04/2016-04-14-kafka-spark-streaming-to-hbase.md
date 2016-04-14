@@ -45,4 +45,4 @@ kafka集群没有使用cdh的,所以是独立安装的. 安装kafka请参见: (k
 
 #### 项目地址和源码
 
-project src: (code)[https://github.com/TopSpoofer/kafka-spark-streaming-to-hbase]
+project src: [code](https://github.com/TopSpoofer/kafka-spark-streaming-to-hbase)
