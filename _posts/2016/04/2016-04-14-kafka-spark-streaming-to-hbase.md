@@ -21,9 +21,9 @@ keywords: 'kafka 数据 spark streaming 导入 hbase saveAsNewAPIHadoopDataset'
 
 安装hadoop, zookeeper, spark, hbase, kafka集群
 
-因为我是使用cdh管理集群的, 安装cdh的教程请参见: (cdh-5.5.1 安装)[http://www.spoofer.top/2016/03/04/centos6-install-cdh]
+因为我是使用cdh管理集群的, 安装cdh的教程请参见: [cdh-5.5.1 安装](http://www.spoofer.top/2016/03/04/centos6-install-cdh)
 
-kafka集群没有使用cdh的,所以是独立安装的. 安装kafka请参见: (kafka 0.9.0.1 安装)[http://www.spoofer.top/2016/04/08/kafka-%E5%88%86%E5%B8%83%E5%BC%8F-install]
+kafka集群没有使用cdh的,所以是独立安装的. 安装kafka请参见: [kafka 0.9.0.1 安装](http://www.spoofer.top/2016/04/08/kafka-%E5%88%86%E5%B8%83%E5%BC%8F-install)
 
 创建kafka topic: users, 并且测试本地是否可以生产消息和消费消息.
 
