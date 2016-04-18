@@ -4,7 +4,7 @@ title:  "kafka 0.9.0.1 分布式集群安装"
 date:   '2016-04-08 07:00:00'
 author: 'spoofer'
 categories: 'blog'
-tags: 'spark'
+tags: 'kafka'
 excerpt: 'kafka 0.9.0.1 分布式集群安装'
 keywords: 'kafka 0.9.0.1 分布式 安装'
 ---
@@ -203,7 +203,3 @@ kafka-topics.sh --delete --zookeeper Core1:2181 --topic mytest
 
 删除kafka存储目录（server.properties文件log.dirs配置，默认为"/tmp/kafka-logs"）相关topic目录
 删除zookeeper "/brokers/topics/"目录下相关topic节点
-
-
-
-  
