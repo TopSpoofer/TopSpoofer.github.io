@@ -24,21 +24,8 @@ TaskScheduler 主要接收 DAGScheduler 提交的 TaskSet 然后提交到集群�
 
 根据运行模式的不同, spark提供了多种 TaskScheduler 的实现. TaskScheduler 的实现列表如下:
 
-```
-----------------------------------------------------------------------------------------
-模式名字         |  实现类                          |  Backend                          |
------------------|----------------------------------|-----------------------------------|
-LOCAL            |  TaskSchedulerImpl               |  LocalBackend                     |
------------------|----------------------------------|-----------------------------------|
-STANDALONE       |  TaskSchedulerImpl               |  SparkDeploySchedulerBackend      |
------------------|----------------------------------|-----------------------------------|
-YARN-CLIENT      |  YarnClientClusterScheduler      |  YarnClientSchedulerBackend       |
------------------|----------------------------------|-----------------------------------|
-YARN-CLUSTER     |  YarnClusterScheduler            |  CoarseGrainedSchedulerBackend    |
------------------|----------------------------------|-----------------------------------|
-MESOS            |  TaskSchedulerImpl               |  CoarseMesosSchedulerBackend or   |
-                 |                                  |  MesosSchedulerBackend            |
------------------------------------------------------------------------------------------
-```
+![taskScheduler.png][1]
 
 下面只对Standalone模式进行讨论. 所以只会对 TaskSchedulerImpl 原理进行说明.
+
+[1]: http://www.spoofer.top/assets/images/2016/04/taskScheduler.png
