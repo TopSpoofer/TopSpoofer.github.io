@@ -13,7 +13,7 @@ keywords: 'spark TaskScheduler'
 
 本文主要讲述spark 中的TaskScheduler的作用。
 
-<!--moer-->
+<!--more-->
 
 #### TaskScheduler 作用简介
 
