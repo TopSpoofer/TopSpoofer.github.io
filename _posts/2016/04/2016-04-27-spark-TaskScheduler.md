@@ -28,4 +28,15 @@ TaskScheduler 主要接收 DAGScheduler 提交的 TaskSet 然后提交到集群�
 
 下面只对Standalone模式进行讨论. 所以只会对 TaskSchedulerImpl 原理进行说明.
 
+
+#### Standalone 下的 TaskSchedulerImpl
+
+TaskSchedulerImpl 的初始化和启动是在SparkContext 中进行的，初始化的时候会传入 SparkDeploySchedulerBackend 对象，
+启动则调用start方法， 在start方法中判断是否启动任务的推测执行，其由spark.speculation属性指定。
+
+而SparkDeploySchedulerBackend中的start方法也是在TaskSchedulerImpl的start方法中调用的。在这个方法中会初始化AppClient对象。主要还是用于与Driver和master的Akka actor进行通信和交互、注册spark Application等。
+
+DAGScheduler处理job的最后一步是将TaskSet提交给TaskScheduler进行调度的，调用的是TaskScheduler中的submitTasks方法。
+
+
 [1]: http://www.spoofer.top/assets/images/2016/04/taskScheduler.png
