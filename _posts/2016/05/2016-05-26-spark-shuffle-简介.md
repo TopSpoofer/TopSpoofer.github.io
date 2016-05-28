@@ -41,4 +41,51 @@ ShuffleMapTask在某个节点上第一次执行时，会为每个ResultTask创�
 
 #### shuffle 读
 
-上述ShuffleMapTask写的结果会给ResultTask去读。spark会`使用两种方式来读这些数据。
+上述ShuffleMapTask写的结果会给ResultTask去读。spark会`使用两种方式来读这些数据。spark使用两种方式去读取这些数据：使用普通的socket方式、使用netty框架。
+如果要使用netty框架方式来读取数据，可以通过配置spark.shuffle.use.netty为true来启动。
+
+ResultTask读取数据时会通过BlockManager根据BlockId把相关的数据返回给ResultTask。如果是netty框架，blockManage会创建ShuffleSender 来专门负责发送数据。
+如果ResultTask需要偶的数据在本节点上，那么就直接读磁盘即可，不需要通过网络获取。
+这一点要比mapreduce要好，因为mapreduce读取数据时，即使数据在本地，也会通过网络获取。
+
+spark的shuffle过程的数据都是没有经过排序的，这一点比mapreduce框架节省很多时间。
+ResultTask读取的数据先放在HashMap里，如果数据量小，占用的内存小，如果内存不够会根据spark.shuffle.spill的设置，可能直接失败或者把数据写到磁盘。
+
+#### shuffle 相关配置属性
+
+##### spark.shuffle.consolidateFiles
+
+默认值： false
+
+说明：
+如果为true，在shuffle时就合并中间文件，对于有大量Reduce任务的shuffle来说，合并文件可以提高文件系统性能。
+
+
+##### spark.shuffle.spill
+
+默认值： true
+
+说明：
+如果为true，在shuffle期间通过一溢出数据到磁盘来降低内存的使用量。溢出的值由spark.shuffle.memory.Fraction指定。
+
+##### spark.shuffle.spill.compress
+
+默认值：true
+
+说明：
+是否压缩在shuffle期间溢出的数据， 如果压缩数据，讲使用spark.io.compression.codec进行压缩。
+
+
+##### spark.shuffle.file.buffer.kb
+
+默认值： 100
+
+说明：
+每个shuffle的文件输出流内存缓冲区的大小，以kb为单位。
+
+##### spark.reduce.maxMbInFlight
+
+默认值: 48
+
+说明：
+每个reduce任务同时获取map输出的最大值，以M为单位。由于每个map输出都需要一个缓冲区来接收它，这样每个reduce任务有着固定的内存开销，所以要设置小点，除非有很大的内存。
