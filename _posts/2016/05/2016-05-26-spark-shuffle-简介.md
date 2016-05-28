@@ -30,7 +30,7 @@ spark有些task间数据流转是不需要通过shuffle的，比如rdd之间是�
 spark中shuffle输出的ShuffleMapTask会为每个ResultTask创建对应的Bucket，ShuffleMapTask产生的结果会根据设置的partitioner得到对应的BucketId，
 然后填充到相应的Bucket中去。每个ShuffleMapTask的输出结果可能包含所有的ResultTask所需要的数据，所以每个ShuffleMapTask创建Bucket的数目是和ResultTask的数目相等的。
 
-ShuffleMapTask创建的Bucket对应磁盘上的一个文件，此文件被称为BlockFile。通过spark.shuffle.file.buffer.kb 属性配置德尔缓冲区就是用来创建FastBufferOutputStream输出流的。
+ShuffleMapTask创建的Bucket对应磁盘上的一个文件，此文件被称为BlockFile。通过spark.shuffle.file.buffer.kb 属性配置的缓冲区就是用来创建FastBufferOutputStream输出流的。
 如果在配置文件中设置了spark.shuffle.consolidateFiles属性为true，那么ShuffleMapTask产生的Bucket就不一定单独对应一个文件了，而是对应文件的一部分，这样做会大量减少产生的BlockFile文件的数量。
 
 ShuffleMapTask在某个节点上第一次执行时，会为每个ResultTask创建一个输出文件。
