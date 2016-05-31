@@ -95,7 +95,35 @@ data checkpoint 是保存生成的RDDs到可靠的容错的存储系统。这在
 
 ![checkpointAndWAL.png][3]
 
-#### At-Least-Once 语义
+#### At Least Once 语义
+
+即使WAL确保数据不会丢失，但是在spark streaming 整合kafka的情况下，还是难以保证exactly once语义的。
+如以下场景：
+
+1、接收器接收到数据，并且对数据进行WAL。
+
+2、但在接收器更新zookeeper中的kafka偏移量之前突然挂掉了。
+因为没有更新kafka的offset，所以在源端数据是没有被消费的。但此时数据已经被写入到WAL了。
+
+3、接收器重新恢复，并且处理WAL中没有被处理的数据。
+4、处理完WAL的数据后，接收器开始从源端kafka消费数据。因为offset没有被更新，所以恢复时处理过的数据重新在kafkak源端再次被读取。
+这样这部分的数据被处理了2次。
+
+#### Direct API
+
+开启WAL会有损性能，所以在spark 1.3中就引入了 Kafka direct API。Exectuor直接从kafka对应的topic中的分区消费数据。
+基于Direct的方式，有spark streaming直接管理offset，可以给定offset范围，直接读取kafka分区的数据，
+保证了每个offset范围只属于一个batch，从而保证了exactly-once 语义。
+Direct API 说白其实就是当kafka topic是一个文件，像读取文件一样消费数据。
+
+新的Direct API有点有：
+
+1、不需要接收器，Exectuor直接使用 kafka 的简单消费者API消费数据。
+
+2、不需要开启WAL，仍然可以从失败中恢复数据。避免了WAL对性能的损失。
+
+3、保存了exactly-once语义。
+
 
 
 
