@@ -33,7 +33,7 @@ keywords: 'spark streaming kafka 数据零丢失'
 
 对于kafka，有一个很对消息队列的都没有的一个功能就是重放。所以spark streaming可以对已经接收的数据进行记录和确认。
 输入的数据首先被接收器接收，接收器是在Executor上进行的，这里先不讨论接收器是如何做的。
-接收器将接收到的数据存储在spark中，进行热备，说白了就是将数据保存到两个（默认情况）Executor中以进行容错。
+接收器将接收到的数据存储在spark中，进行热备，说白了就是将数据保存到两个（默认情况）Executor的内存中以进行容错。
 一旦数据被存储到spark中，接收器就对其进行确认操作（更新kafka的偏移量到zookeeper）。
 这样可以保证在接收器（Executor）突然挂掉后也不会丢失数据，因为数据即使被接收了，但还没有被持久化的情况下是不会进行确认的。
 所以在Executor恢复的时候可以重新读取数据这是基于kafka支持重放机制。
@@ -45,6 +45,9 @@ keywords: 'spark streaming kafka 数据零丢失'
 可靠的数据源和可靠的接收器可以使我们从接收器或者Executor突然挂掉的情况下正常恢复。但如果driver挂掉的话，问题就更复杂了。
 有很多的技术可以让driver从失败中恢复，其中一个就是对数据的元数据进行checkpoint。进行checkpoint的时候，一般会将数据持久化到可靠的文件系统中，
 例如S3、HDFS等。这样driver可以利用这些持久化的数据从失败中进行恢复。
+
+![checkpoint.png][2]
+
 
 ##### checpoint 的内容
 
@@ -64,7 +67,35 @@ metadata checkpoint 保存了定义streaming 计算逻辑到可靠的支持容�
 
 data checkpoint 是保存生成的RDDs到可靠的容错的存储系统。这在某些statefull转换中是需要的。在这种转换中，生成 RDD 需要依赖前面的 batches，会导致依赖链随着时间而变长。为了避免这种没有尽头的变长，要定期将中间生成的 RDDs 保存到可靠存储来切断依赖链。
 
+#### 数据丢失
 
+即使有了上述的两个条件来保证数据不丢失，但还是存在数据丢失的场景。例如：
+
+
+1、Executor 从kafka接收到数据后将数据备份、缓存到其他Executor的内存中，进行热备。
+
+2、接收器通知数据源数据已经接收完毕，其实就是更新kafka 的 offset。
+
+3、driver提交了jobset，并且Executor 开始这些job处理数据。
+
+4、driver突然挂掉。因为driver挂掉，相应的Executor也会被杀死。
+
+5、因为数据缓存在多个Executor的内存中，所以Executor挂掉，缓存的数据也被丢失了，
+而且这些数据已经被确认接收、消费，所以无法在本地和源端进行复原，造成数据丢失。
+
+因为driver的突然退出而造成的数据丢失实在可怕，必须有一个解决方案。
+
+#### WAL
+
+对应上述可能造成数据丢失的场景， spark 1.2 后开始引入了WAL (Write ahead log) 机制。
+
+开启了WAL后，接收器将接收到的数据写入到容错的存储系统中，例如HDFS、S3等。
+这样即使driver失败了，还是可以在恢复中找到丢失的数据，因为已经保存在容错的存储系统中。
+因为接收到数据后需要写入容错的存储系统，这难免会损失性能。
+
+![checkpointAndWAL.png][3]
+
+#### At-Least-Once 语义
 
 
 
@@ -103,3 +134,5 @@ data checkpoint 是保存生成的RDDs到可靠的容错的存储系统。这在
 
 
 [1]: http://www.spoofer.top/assets/images/2016/05/可靠数据源和接收器.png
+[2]: http://www.spoofer.top/assets/images/2016/05/checkpoint.png
+[3]: http://www.spoofer.top/assets/images/2016/05/checkpointAndWAL.png
