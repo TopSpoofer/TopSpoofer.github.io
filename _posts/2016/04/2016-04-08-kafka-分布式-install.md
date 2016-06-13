@@ -128,16 +128,16 @@ metadata.broker.list=Kafka1:9092,Kafka1:9093,Kafka2:9094
 
 #### 启动kafka
 
-这个是启动broker的指令，其他broker自己设置指定的配置文件进行启动
+这个是启动broker的指令，其他broker自己设置指定的配置文件进行启动, 需要注意的是要先启动zk！
 
 ```
-bin/zookeeper-server-start.sh etc/kafka-server1.properties
+bin/kafka-server-start.sh etc/kafka-server1.properties
 ```
 
 或者以守护进程来运行
 
 ```
-bin/zookeeper-server-start.sh -daemon etc/kafka-server1.properties
+bin/kafka-server-start.sh -daemon etc/kafka-server1.properties
 ```
 
 #### 创建topic
@@ -151,7 +151,7 @@ bin/kafka-topics.sh --create --zookeeper Core1:2181 --replication-factor 3 --par
 #### 查看所有topics
 
 ```
-bin/kafka-topics.sh --list --zookeeper Core:2181
+bin/kafka-topics.sh --list --zookeeper Core1:2181
 ```
 
 #### 查看topic在每个节点的信息
