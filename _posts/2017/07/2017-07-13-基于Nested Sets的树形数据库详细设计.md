@@ -207,7 +207,7 @@ DELIMITER ;
 
 移动一个节点也是包括移动一个叶子节点和非叶子节点，移动的节点个数也可以像删除节点部分那个推导一样：
 
-(move_node_right - move_node_left + 1) / 2
+(move_node_right - move_node_left + 1) / 2，此规则叶子节点也适用。
 
 移动一个节点的情况可以分为2种，左移和右移： 如果源节点的left > 目标节点的right 则定义为左移，否则定义为右移。
 ```
@@ -218,6 +218,96 @@ src_left > des_right --> 左移
 ##### 节点左移
 
 ![节点左移.png][4]
+
+如上图，将H节点移动到B节点下的最左边（左移的情况应该可以将节点插入到最右边的）成为B的子节点。
+非常明显的是，需要更改的节点是在B与H间的节点。
+
+```
+-- 算法伪代码
+move_node_amount = src_node_right - src_node_left + 1
+passAmount =  src_node_left - des_node_right - 1  //H 与 B 之间的数量
+
+if des_node_left < node_left < src_node_left
+  node_left = node_left + move_node_amount
+
+if des_node_left < node_right < src_node_left
+  node_right = node_right + move_node_amount
+
+for move_node or move_node's child
+  left = left - passAmount
+  right = right - passAmount
+
+
+-- sql
+
+DELIMITER $$
+
+CREATE PROCEDURE `ResourceService`.MoveObject(SrcId INT, DesId INT)
+BEGIN
+  DECLARE MoveAmount INT;
+  DECLARE PassAmount INT;
+  DECLARE SrcLeft INT;
+  DECLARE SrcRight INT;
+  DECLARE DesLeft INT;
+  DECLARE DesRight Int;
+
+  SELECT `left`, `right` INTO SrcLeft, SrcRight FROM `tree` WHERE `id` = SrcId;
+  SELECT `left`, `right` INTO DesLeft, DesRight FROM `tree` WHERE `id` = DesId;
+  DROP TABLE IF EXISTS `TreeDB`.`MoveObjectTmpTable`;
+  CREATE TEMPORARY TABLE `TreeDB`.`MoveObjectTmpTable`
+      (SELECT `id` FROM `tree` WHERE `left` >= SrcLeft AND `right` <= SrcRight);
+  SET MoveAmount = SrcRight - SrcLeft + 1;
+  IF (SrcLeft > DesRight) THEN
+    SET PassAmount = SrcLeft - DesLeft - 1;
+    START TRANSACTION;
+    UPDATE `tree` SET `left` = `left` + MoveAmount WHERE `left` > DesLeft AND `left` < SrcLeft;
+    UPDATE `tree` SET `right` = `right` + MoveAmount WHERE `right` > DesLeft AND `right` < SrcLeft;
+    UPDATE `tree` SET `left` = `left` - PassAmount, `right` = `right` - PassAmount WHERE `id` in
+      (SELECT `id` FROM `TreeDB`.`MoveObjectTmpTable`);
+    COMMIT;
+  END IF;
+END $$
+
+DELIMITER ;
+```
+需要注意的是，要先记录被移动的节点及其子孙的id，不然update 后left和right有重复的节点，无法在获取到被移动的节点了！
+
+
+#### 节点右移
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
