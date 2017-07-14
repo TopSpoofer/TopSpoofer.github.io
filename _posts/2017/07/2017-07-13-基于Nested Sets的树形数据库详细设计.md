@@ -123,6 +123,14 @@ DELIMITER ;
 
 ![add_tree_node.png][2]
 
+在C点插入一个节点， 我们将new节点插入到C点的最右边， 这样是为了是C下的其他节点不需要再改变。
+其中图中带红色的节点都是需要改变的。至于为什么要+2， 而不是+4呢？对～～聪明的你应该知道了！下面上sql：
+
+```
+
+
+```
+
 
 
 
@@ -159,4 +167,4 @@ DELIMITER ;
 
 
 [1]: http://www.spoofer.top/assets/images/2017/07/树形.png
-[2]: http://www.spoofer.top/assets/images/2017/07/add_tree_node.png
+[2]: https://github.com/TopSpoofer/TopSpoofer.github.io/blob/master/assets/images/2017/07/add_tree_node.png
