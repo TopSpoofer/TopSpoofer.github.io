@@ -71,7 +71,7 @@ SELECT * FROM `tree` WHERE `left` > 1 AND `right` < 10;
 对c# programmer这个节点，对比于boss、c# leader 和java leader就可以发现，
 只要左边比c# programmer 小，但右边比c# programmer大的节点都是到达c# programmer路径上的，所以只需要统计这些节点的数量就可以知道c# programmer的深度。
 
-```
+```sql
 
 DELIMITER $$
 
@@ -98,7 +98,7 @@ DELIMITER ;
 
 根据 ‘获取节点深度’ 分析可知，需要获取某节点的族谱路径只需要分析节点左右值，然后一条sql就可以解决了：
 
-```
+```sql
 DELIMITER $$
 
 CREATE FUNCTION NodeLayer(node_id INT)
@@ -126,12 +126,12 @@ DELIMITER ;
 在C点插入一个节点， 我们将new节点插入到C点的最右边， 这样是为了是C下的其他节点不需要再改变。
 其中图中带红色的节点都是需要改变的。至于为什么要+2， 而不是+4呢？对～～聪明的你应该知道了！下面上sql：
 
-```
+```sql
 算法伪代码：
 
 AddAmount = 2 //一个节点
 AddPoint = des_right  //插入点
-//des_right 目标节点也是插入点，node_right 树中节点的右边
+//des_right 目标节点, 也是插入点，node_right 树中节点的右边
 if node_right >= des_right
   node_right = node_right + AddAmount
 if node_left >= des_left
@@ -146,7 +146,7 @@ DELIMITER $$
 
 CREATE PROCEDURE `tree`.AddSubNode(node_id INT, node_name VARCHAR(256) CHARSET utf8)
 BEGIN
-	DECLARE AddPoint INT;
+  DECLARE AddPoint INT;
   START TRANSACTION;
   SELECT `right` INTO AddPoint FROM `tree` WHERE `tree`.`id` = node_id;
   UPDATE `tree` SET `right` = `right` + 2 WHERE `right` >= AddPoint;
@@ -159,6 +159,14 @@ DELIMITER ;
 
 
 ```
+
+#### 删除某节点
+
+删除节点包括删除一个叶子节点和删除一个非叶子节点， 当删除一个非叶子节点时需要删除此节点及其下的所有子节点，这些被删除的节点个数为：
+
+(delete_node_right - delete_node_left + 1) / 2， 这个规则对于叶子节点也是适用的。
+
+
 
 
 
