@@ -127,9 +127,41 @@ DELIMITER ;
 其中图中带红色的节点都是需要改变的。至于为什么要+2， 而不是+4呢？对～～聪明的你应该知道了！下面上sql：
 
 ```
+算法伪代码：
+
+AddAmount = 2 //一个节点
+AddPoint = des_right  //插入点
+//des_right 目标节点也是插入点，node_right 树中节点的右边
+if node_right >= des_right
+  node_right = node_right + AddAmount
+if node_left >= des_left
+  node_left = node_left + AddAmount
+
+newnode_left = AddPoint
+newnode_right = AddPoint + 1
+
+-- sql
+-- node_id 为插入点
+DELIMITER $$
+
+CREATE PROCEDURE `tree`.AddSubNode(node_id INT, node_name VARCHAR(256) CHARSET utf8)
+BEGIN
+	DECLARE AddPoint INT;
+  START TRANSACTION;
+  SELECT `right` INTO AddPoint FROM `tree` WHERE `tree`.`id` = node_id;
+  UPDATE `tree` SET `right` = `right` + 2 WHERE `right` >= AddPoint;
+  UPDATE `tree` SET `left` = `left` + 2 WHERE `left` >= AddPoint;
+  INSERT INTO `tree`(`name`, `left`, `right`) VALUES(node_name, AddPoint, AddPoint + 1);
+  COMMIT;
+END $$
+
+DELIMITER ;
 
 
 ```
+
+
+
 
 
 
