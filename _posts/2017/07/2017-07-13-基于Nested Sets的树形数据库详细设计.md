@@ -230,7 +230,7 @@ src_left > des_right --> 左移
 ```sql
 -- 算法伪代码：
 move_node_amount = src_node_right - src_node_left + 1
-passAmount =  src_node_left - des_node_right - 1  //H 与 B 之间的数量
+passAmount =  src_node_left - des_node_left - 1  //H 与 B 之间的数量
 
 if des_node_left < node_left < src_node_left
   node_left = node_left + move_node_amount
