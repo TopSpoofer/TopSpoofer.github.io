@@ -123,7 +123,7 @@ DELIMITER ;
 其中图中带红色的节点都是需要改变的。至于为什么要+2， 而不是+4呢？对～～聪明的你应该知道了！下面上sql：
 
 ```sql
-算法伪代码：
+-- 算法伪代码：
 
 AddAmount = 2 //一个节点
 AddPoint = des_right  //插入点
@@ -169,7 +169,7 @@ DELIMITER ;
 如上图，将C节点删除，其中H和new节点也随便被删除。
 
 ```sql
-算法伪代码：
+-- 算法伪代码：
 deleteAmount = delete_node_right - delete_node_left + 1
 
 if node_left > delete_node_right
@@ -178,6 +178,8 @@ if node_right > delete_node_right
   node_right = node_right - deleteAmount
 
 delete node
+
+-- sql
 
 DELIMITER $$
 
@@ -199,16 +201,23 @@ BEGIN
 END $$
 
 DELIMITER ;
-
 ```
 
+#### 移动节点
 
+移动一个节点也是包括移动一个叶子节点和非叶子节点，移动的节点个数也可以像删除节点部分那个推导一样：
 
+(move_node_right - move_node_left + 1) / 2
 
+移动一个节点的情况可以分为2种，左移和右移： 如果源节点的left > 目标节点的right 则定义为左移，否则定义为右移。
+```
+src_left > des_right --> 左移
+```
+需要注意的是无法将父几点移动到子孙节点里。
 
+##### 节点左移
 
-
-
+![节点左移.png][4]
 
 
 
@@ -220,3 +229,4 @@ DELIMITER ;
 [1]: http://www.spoofer.top/assets/images/2017/07/树形.png
 [2]: http://www.spoofer.top/assets/images/2017/07/加入节点.png
 [3]: http://www.spoofer.top/assets/images/2017/07/删除树节点.png
+[4]: http://www.spoofer.top/assets/images/2017/07/节点左移.png
