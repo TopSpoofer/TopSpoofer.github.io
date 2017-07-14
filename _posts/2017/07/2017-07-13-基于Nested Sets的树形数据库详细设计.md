@@ -24,7 +24,7 @@ Nested Sets 需要left和right来记录一个节点的左右值，这个节点�
 
 | id        | left  | right | name |
 | ------------- |:-------------| :---------|:--------|
-
+| 节点id      | 节点左值 | 节点右值 | 业务字段 |
 
 需要加入其他字段来完成业务的需求。
 
@@ -94,7 +94,34 @@ DELIMITER ;
 
 ```
 
-#### 
+#### 获取某节点的族谱路径
+
+根据 ‘获取节点深度’ 分析可知，需要获取某节点的族谱路径只需要分析节点左右值，然后一条sql就可以解决了：
+
+```
+DELIMITER $$
+
+CREATE FUNCTION NodeLayer(node_id INT)
+RETURNS INT
+
+BEGIN
+    DECLARE left INT;
+    DECLARE right INT;
+    -- get node's left, right
+    SELECT `left`, `right` INTO left, right FROM `tree` WHERE `id` = node_id;
+    -- count layer
+    SELECT * FROM `tree` WHERE `left` < left AND `right` > right ORDER BY `left` ASC;
+END $$
+
+DELIMITER ;
+
+```
+
+#### 加入节点
+
+加入一个节点也是很简单的， 但如果树的规模比较大的时候需要修改的节点比较多，所以开销也是比较大的。先上图：
+
+![add_tree_node.png][2]
 
 
 
@@ -132,3 +159,4 @@ DELIMITER ;
 
 
 [1]: http://www.spoofer.top/assets/images/2017/07/树形.png
+[2]: http://www.spoofer.top/assets/images/2017/07/add_tree_node.png
