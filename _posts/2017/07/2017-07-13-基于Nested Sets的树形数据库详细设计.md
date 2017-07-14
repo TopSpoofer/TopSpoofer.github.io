@@ -63,6 +63,9 @@ SELECT * FROM `tree` WHERE `left` > 1 AND `right` < 10;
 
 对于一个节点到底有多少个子孙， 其实这个问题很简单，只需要将节点(right - left - 1) / 2即可。
 
+如果要获取某个节点下所有子节点（不包括孙子节点及之后的节点）的话，比较麻烦，但设计嘛可以加点字段去解决这个问题，
+例如加入一个parent_id来指向直接上级，这样问题就解决了。
+
 
 #### 获取节点深度
 
@@ -135,7 +138,8 @@ if node_left >= des_left
 
 newnode_left = AddPoint
 newnode_right = AddPoint + 1
-
+```
+```sql
 -- sql
 -- node_id 为插入点
 DELIMITER $$
@@ -178,7 +182,8 @@ if node_right > delete_node_right
   node_right = node_right - deleteAmount
 
 delete node
-
+```
+```sql
 -- sql
 
 DELIMITER $$
@@ -222,8 +227,8 @@ src_left > des_right --> 左移
 如上图，将H节点移动到B节点下的最左边（左移的情况应该可以将节点插入到最右边的）成为B的子节点。
 非常明显的是，需要更改的节点是在B与H间的节点。
 
-```
--- 算法伪代码
+```sql
+-- 算法伪代码：
 move_node_amount = src_node_right - src_node_left + 1
 passAmount =  src_node_left - des_node_right - 1  //H 与 B 之间的数量
 
@@ -233,11 +238,12 @@ if des_node_left < node_left < src_node_left
 if des_node_left < node_right < src_node_left
   node_right = node_right + move_node_amount
 
-for move_node or move_node's child
+for move_node or move_node child
   left = left - passAmount
   right = right - passAmount
 
-
+```
+```sql
 -- sql
 
 DELIMITER $$
@@ -275,48 +281,47 @@ DELIMITER ;
 
 #### 节点右移
 
+节点右移是跟左移相反的。如下图：
+
+![节点右移.png][5]
+
+```sql
+-- 算法伪代码
+move_node_amount = src_node_right - src_node_left + 1
+passAmount =  des_node_right - src_node_right - 1  //C 与 B 之间的数量
 
 
+if src_node_right < node_left < des_node_right
+  node_left = node_left - move_node_amount
+
+if src_node_right < node_right < des_node_left
+  node_right = node_right - move_node_amount
+
+for move_node or move_node child
+  left = left + passAmount
+  right = right + passAmount
+```
+```sql
+-- sql
+SET PassAmount = DesRight - SrcRight - 1;
+START TRANSACTION;
+UPDATE `tree` SET `left` = `left` - MoveAmount WHERE `left` > SrcRight AND `left` < DesRight;
+UPDATE `tree` SET `right` = `right` - MoveAmount WHERE `right` > SrcRight AND `right` < DesRight;
+UPDATE `tree` SET `left` = `left` + PassAmount, `right` = `right` + PassAmount WHERE `id` in
+  (SELECT `tree` FROM `tree`.`MoveObjectTmpTable`);
+COMMIT;
+```
+
+可以思考一下为什么不把源节点插入到目标节点的最左边呢？
 
 
+### 总结
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+至此，基于Nested Sets设计的curd sql基本给出了，更多的需求可以自行进行编写sql，或者通过添加一些字段来满足需求。
+通过上面的例子可以看出Nested Sets 适合查询多、更改少、无法预料深度的树需求。
 
 [1]: http://www.spoofer.top/assets/images/2017/07/树形.png
 [2]: http://www.spoofer.top/assets/images/2017/07/加入节点.png
 [3]: http://www.spoofer.top/assets/images/2017/07/删除树节点.png
 [4]: http://www.spoofer.top/assets/images/2017/07/节点左移.png
+[5]: http://www.spoofer.top/assets/images/2017/07/节点右移.png
