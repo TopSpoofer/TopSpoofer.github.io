@@ -127,41 +127,6 @@ Direct API 说白其实就是当kafka topic是一个文件，像读取文件一�
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 [1]: http://www.spoofer.top/assets/images/2016/05/可靠数据源和接收器.png
 [2]: http://www.spoofer.top/assets/images/2016/05/checkpoint.png
 [3]: http://www.spoofer.top/assets/images/2016/05/checkpointAndWAL.png
