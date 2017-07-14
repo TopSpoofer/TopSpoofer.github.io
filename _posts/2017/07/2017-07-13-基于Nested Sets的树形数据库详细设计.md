@@ -164,28 +164,43 @@ DELIMITER ;
 删除节点后，需要对左值大于被删节点右值的所有节点都需要更新所有左右值。上图：
 
 
+![删除树节点.png][3]
 
+如上图，将C节点删除，其中H和new节点也随便被删除。
 
+```sql
+算法伪代码：
+deleteAmount = delete_node_right - delete_node_left + 1
 
+if node_left > delete_node_right
+  node_left = node_left - deleteAmount
+if node_right > delete_node_right
+  node_right = node_right - deleteAmount
 
+delete node
 
+DELIMITER $$
 
+CREATE PROCEDURE `ResourceService`.DeleteDir(DeleteNodeId INT)
+BEGIN
 
+  DECLARE DeletedLeft INT;
+  DECLARE DeletedRight INT;
+  DECLARE DeletedSubAmount INT;
+  SET DeletedSubAmount = 0;
 
+  START TRANSACTION;
+  SELECT `left`, `right` INTO DeletedLeft, DeletedRight FROM `tree` WHERE `id` = DeleteNodeId;
+  SET DeletedSubAmount = DeletedRight - DeletedLeft + 1;
+  DELETE FROM `tree` WHERE `left` >= DeletedLeft AND `right` <= DeletedRight;
+  UPDATE `tree` SET `left` = `left` - DeletedSubAmount WHERE `left` > DeletedLeft;
+  UPDATE `tree` SET `right` = `right` - DeletedSubAmount WHERE `right` > DeletedRight;
+  COMMIT;
+END $$
 
+DELIMITER ;
 
-
-
-
-
-
-
-
-
-
-
-
-
+```
 
 
 
@@ -204,3 +219,4 @@ DELIMITER ;
 
 [1]: http://www.spoofer.top/assets/images/2017/07/树形.png
 [2]: http://www.spoofer.top/assets/images/2017/07/加入节点.png
+[3]: http://www.spoofer.top/assets/images/2017/07/删除树节点.png
