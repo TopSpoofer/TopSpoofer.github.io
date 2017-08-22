@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "docker-compose mysql5.7 主从部署"
-date:   '2017-08-022 16:00:00'
+date:   '2017-08-22 16:00:00'
 author: 'spoofer'
 categories: '笔记'
 tags: '数据库'
