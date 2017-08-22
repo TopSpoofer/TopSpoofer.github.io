@@ -124,6 +124,7 @@ max_binlog_size   = 100M
 # ssl-key=/etc/mysql/server-key.pem
 ```
 需要注意的是 master 配置中 server-id = 1，这个是唯一id来的，slave中配置跟master一样，只需要改变server-id为2。
+除了server-id需要设置外，还需要设置log_bin（必须启用二进制日志），这里默认即可。
 
 ### 编写Dockerfile
 在 master 目录中创建Dockerfile文件，内容为：
